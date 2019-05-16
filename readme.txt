@@ -2,39 +2,42 @@ Koden illustrerer et integrasjonslag med en enkel REST-tjeneste, som kaller fler
 - pakke intlayer: REST-API og tjenesteobjekt
 - pakke fagsystem: mockede fagsystem
 - pakke domain: dataobjekter inn/ut av API
-- pakke jetty (test): jetty-server, klient for å kalle API, main som starter jetty og kaller API med forskjellige input-caser
+- pakke jetty (test): jetty-server, klient for ï¿½ kalle API, main som starter jetty og kaller API med forskjellige input-caser
+
+Bygging: mvn clean package
+TestkjÃ¸ring: java -jar target/testcase1.jar
 
 -----
 Forutsetninger/avklaringer av forretningslogikk og mulige scenarier vs fagsystem
 
 Opprett kunde
-- feiler ikke så lenge input fra klienten er fullstendig og riktig?
+- feiler ikke sï¿½ lenge input fra klienten er fullstendig og riktig?
 - finnes register over kunder som er "nektet"?
 - allerede eksisterende kunder godtas, gis info om dette i respons
 - mao. kun tekniske feil eller inputfeil, status nyopprettet, status oppdatert, med evt tilleggsinfo
-Får tilbake 
+Fï¿½r tilbake 
  - statusobjekt med kundenummer og tilleggsinfo, eller
  - feilstatus med forklaring av hvilken input som er feil (evt lage/duplisere validering i int-lag (klient)), eller
  - feilstatus med teknisk feil internt i fagsystem, eller
  - timeout / feil
 
 Opprett avtale
-- feiler ikke så lenge input fra klienten er fullstendig og riktig?
+- feiler ikke sï¿½ lenge input fra klienten er fullstendig og riktig?
 - finnes register over kunde-avtalekombo som er "nektet"?
-Får tilbake 
+Fï¿½r tilbake 
  - statusobjekt med avtalenummer og tilleggsinfo, eller
  - feilstatus med forklaring av hvilken input som er feil (evt lage/duplisere validering i int-lag (klient)), eller
  - feilstatus med teknisk feil internt i fagsystem, eller
  - timeout / feil 
 
 Oppdater avtale
-Får tilbake 
+Fï¿½r tilbake 
  - avtalestatusobjekt, eller
  - feilstatus med teknisk feil internt i fagsystem, eller
  - timeout / feil 
 
 Brevtjeneste
-Får tilbake 
+Fï¿½r tilbake 
  - status sendt ok, eller
  - feilstatus med teknisk feil internt i sendetjeneste, eller
  - timeout / feil 
@@ -44,20 +47,20 @@ Scenarier og respons fra int-lag
 - opprett kunde eller avtale feiler pga feil/manglende input: status 4xx, forklaring av hva som mangler
   ? skal man slette/deaktivere nyopprettet kunde hvis opprett avtale feiler ?
 - teknisk feil ved opprett kunde/avtale: 5xx, forklaring av hva som feiler
-- teknisk feil ved brevsending: 5xx, forklaring av status, evt sending til rekjøringskø (int-lag, klient eller driftsrutine tar videre)
-- teknisk feil ved oppdatering: som over, men her vil det være annen rekjøring, evt info til kunde
+- teknisk feil ved brevsending: 5xx, forklaring av status, evt sending til rekjï¿½ringskï¿½ (int-lag, klient eller driftsrutine tar videre)
+- teknisk feil ved oppdatering: som over, men her vil det vï¿½re annen rekjï¿½ring, evt info til kunde
 - OK, 2xx med kundeinfo, avtaleinfo
 
 -----
 ANBEFALER splitting i status "aktivert" og "sendt til kunde"
 
-Poenget er at brevsending er en operasjon som 1) sender informasjon til ekstern aktør, og 2) ikke kan rulles tilbake,
-mens statusoppdatering er en operasjon som kan feile og tydeligvis er "nødvendig" for at avtalen skal være gyldig.
-Hvis informasjonen sendt med brev tilsier at avtalen ER gyldig, er dette feil måte/rekkefølge å utføre tingene på.
+Poenget er at brevsending er en operasjon som 1) sender informasjon til ekstern aktï¿½r, og 2) ikke kan rulles tilbake,
+mens statusoppdatering er en operasjon som kan feile og tydeligvis er "nï¿½dvendig" for at avtalen skal vï¿½re gyldig.
+Hvis informasjonen sendt med brev tilsier at avtalen ER gyldig, er dette feil mï¿½te/rekkefï¿½lge ï¿½ utfï¿½re tingene pï¿½.
 
-Beste løsning er å skille mellom status "aktiv/gyldig", som avtalen er i allerede før brevsending, 
-og status "sendt til kunde", som må ansees som tilleggsinformasjon.
-Begge disse statusene må ansees som OK i forhold til at avtalen er gyldig, 
-og så må det finnes "nødrutiner" som håndterer statusoppdatering i ettertid for de som har feilet,
+Beste lï¿½sning er ï¿½ skille mellom status "aktiv/gyldig", som avtalen er i allerede fï¿½r brevsending, 
+og status "sendt til kunde", som mï¿½ ansees som tilleggsinformasjon.
+Begge disse statusene mï¿½ ansees som OK i forhold til at avtalen er gyldig, 
+og sï¿½ mï¿½ det finnes "nï¿½drutiner" som hï¿½ndterer statusoppdatering i ettertid for de som har feilet,
 og brevsending + statusoppdatering i ettertid dersom brevsending feilet.
 
