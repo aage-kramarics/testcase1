@@ -64,4 +64,20 @@
             <url>http://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
+    <build>
+       <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <mainClass>no.nav.idm.ImportFilForFagroller</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+    </build>
 </project>

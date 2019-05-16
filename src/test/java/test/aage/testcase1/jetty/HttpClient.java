@@ -1,4 +1,4 @@
-package no.nav.ortok.jetty;
+package test.aage.testcase1.jetty;
 
 import java.io.IOException;
 import java.io.OutputStream;

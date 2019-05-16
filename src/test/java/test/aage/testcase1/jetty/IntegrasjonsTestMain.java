@@ -1,13 +1,13 @@
-package no.nav.ortok.jetty;
+package test.aage.testcase1.jetty;
 
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.nav.ortok.jetty.HttpClient.Response;
 import test.aage.testcase1.domain.NyAvtaleInfo;
 import test.aage.testcase1.domain.NyKundeInfo;
+import test.aage.testcase1.jetty.HttpClient.Response;
 
 public class IntegrasjonsTestMain {
 
