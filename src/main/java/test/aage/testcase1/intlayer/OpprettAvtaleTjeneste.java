@@ -23,11 +23,17 @@ public class OpprettAvtaleTjeneste {
 	private BrevSystem brevSystem;
 	
 	/*
-	 * Normalt vil hvert tjenestekall konvertere input-objekter til fagsystemets input-objekter før fagsystemet kalles,
-	 * og konvertere fagsystemets retur-objekt før retur.
-	 * I tillegg vil man måtte håndtere avvik fra normaloppførsel i fagsystemet og gi ønsket retur for disse.
-	 * Dersom fagsystem-kallet ikke er et "trygt", synkront kall, må dette pakkes inn og man må håndtere f.eks. timeout.
-	 * Disse aspektene er ikke vist her.
+	 * For å bli brukbar må denne tjenesten håndtere følgende i hvert tjenestekall:
+	 * 
+	 * - Konvertere input-objekter til fagsystemets input-objekter før fagsystemet kalles,
+	 *   og konvertere fagsystemets retur-objekt før retur.
+	 *   
+	 * - Håndtere avvik fra normaloppførsel i fagsystemet og gi ønsket retur for disse.
+	 *   Dersom fagsystem-kallet ikke er et "trygt", synkront kall, må dette pakkes inn og man må håndtere f.eks. timeout.
+	 * 
+	 * - Dersom fagsystemet har begrenset kapasitet, kan man måtte strupe trafikken og f.eks. bruke en thread pool
+	 * 
+	 * Til de to siste punktene kan man f.eks. anvende Hystrix.
 	 */
 	public KundeStatus opprettKunde(NyKundeInfo kunde) {
 		return kundeFagSystem.opprettKunde(kunde);
